@@ -5,64 +5,55 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.coley</groupId>
 	<artifactId>memcompiler</artifactId>
-	<version>1.0</version>
+	<version>2.0</version>
 	<name>Simple Memory Compiler</name>
 	<description>In-memory compiler for fileless java compilation</description>
-	<!-- Profiles for windows and mac systems that define the path for
-	     the JDK's lib folder. This allows using the tools jar file in
-	     a cross-platform way without having to use the old version on
-	     maven central.
-
-	     Sadly, this will not work in JDK-9+ due to the removal of
-	     the tools jar... The classes still exist but they've been
-	     moved.
-	 -->
-	<profiles>
-		<profile>
-			<id>windows-profile</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<file>
-					<exists>${env.JAVA_HOME)/lib/</exists>
-				</file>
-			</activation>
-			<properties>
-				<toolspath>${env.JAVA_HOME)/lib/</toolspath>
-			</properties>
-		</profile>
-		<profile>
-			<id>mac-profile</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-				<file>
-					<exists>${java.home}/../lib/</exists>
-				</file>
-			</activation>
-			<properties>
-				<toolspath>${java.home}/../lib/</toolspath>
-			</properties>
-		</profile>
-	</profiles>
-	<!--  -->
+	<!-- Only here because otherwise IntelliJ keeps reverting back to 1.5 :/ -->
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<!-- -->
 	<dependencies>
-		<!-- Profile-specific tools dependency -->
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<scope>system</scope>
-			<version>hello-darkness-my-old-friend</version>
-			<systemPath>${toolspath}/tools.jar</systemPath>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 	<!-- -->
 	<build>
 		<plugins>
+			<!-- Compilation based on local ~/.m2/toolchains.xml...
+			     I know that is REALLY bad, but I can't seem to
+				 figure out a better way. Nothing else works ... -->
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
+				<artifactId>maven-toolchains-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<toolchains>
+						<jdk>
+							<version>1.11</version>
+							<vendor>openjdk</vendor>
+						</jdk>
+					</toolchains>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<release>11</release>
 				</configuration>
 			</plugin>
 			<plugin>
