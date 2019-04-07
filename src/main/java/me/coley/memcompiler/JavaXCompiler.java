@@ -61,10 +61,10 @@ public class JavaXCompiler implements Compiler {
 			if(modules != null && modules.size() > 0) {
 				if(jvmSupportsModules()) {
 					Class compilationTaskClass = JavaCompiler.CompilationTask.class;
-					Method addModules =  compilationTaskClass.getMethod("addModules", List.class);
+					Method addModules = compilationTaskClass.getMethod("addModules", List.class);
 					addModules.invoke(task, modules);
 				} else {
-					// should probably report some kind of error
+					// should probably report some kind of warning
 				}
 			}
 			return task.call();
