@@ -73,7 +73,7 @@ This project is hosted via JitPack.io. You can add this project to your maven pr
 	<dependency>
 	    <groupId>com.github.Col-E</groupId>
 	    <artifactId>Simple-Memory-Compiler</artifactId>
-	    <version>1.0</version>
+	    <version>2.1</version>
 	</dependency>
 </dependencies>
 ```
