@@ -1,6 +1,9 @@
 # Simple Memory Compiler [![](https://jitpack.io/v/Col-E/Simple-Memory-Compiler.svg)](https://jitpack.io/#Col-E/Simple-Memory-Compiler)
 
-This is a basic wrapper for the `javax.tools.JavaCompiler` found in `tools.jar` in the JDK *(pre-9)*. 
+This is a basic wrapper for the `javax.tools.JavaCompiler`.
+
+* For Java 8- this is found in `tools.jar`.
+* For Java 9+ this is found in the module `java.compiler`.
 
 ### Features
 
@@ -25,7 +28,7 @@ s.append("public class HelloWorld {" +
          "  }" +
          "}");
 // create the compiler, add the code
-Compiler c = new Compiler();
+Compiler c = new JavaXCompiler();
 c.addUnit("HelloWorld", s.toString());
 c.compile();
 // compiled code, note the additional inner class.
@@ -40,7 +43,7 @@ System.out.println(Arrays.toString(inner));
 Compiler c = ...
 // by default the current runtime's 'java.class.path' is used
 // you can specify additional paths like so:
-c.getClassPath().add("lib/MyLibrary.jar");
+c.setClassPath(Collections.singletonList("lib/MyLibrary.jar"));
 // lib is a folder in the current directory
 ```
 
@@ -62,7 +65,7 @@ c.getDebug().lineNumbers = true;
 ### Using in your project
 
 This project is hosted via JitPack.io. You can add this project to your maven project like so:
-```
+```xml
 <repositories>
 	<repository>
 	    <id>jitpack.io</id>
