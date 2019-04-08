@@ -64,7 +64,7 @@ public class JavaXCompiler implements Compiler {
 					Method addModules = compilationTaskClass.getMethod("addModules", List.class);
 					addModules.invoke(task, modules);
 				} else {
-					// should probably report some kind of warning
+					throw new RuntimeException("Compiler does not support modules! The current Java version is <= 9");
 				}
 			}
 			return task.call();
