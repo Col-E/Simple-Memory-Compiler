@@ -3,6 +3,8 @@ package me.coley.memcompiler;
 import javax.tools.*;
 import javax.tools.JavaFileObject.Kind;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -57,13 +59,37 @@ public class JavaXCompiler implements Compiler {
 			JavaCompiler.CompilationTask task = javac.getTask(null, fm, listener,
 					options, null, unitMap.values());
 			if(modules != null && modules.size() > 0) {
-				task.addModules(modules);
+				if(jvmSupportsModules()) {
+					Class compilationTaskClass = JavaCompiler.CompilationTask.class;
+					Method addModules = compilationTaskClass.getMethod("addModules", List.class);
+					addModules.invoke(task, modules);
+				} else {
+					// should probably report some kind of warning
+				}
 			}
 			return task.call();
-		} catch(RuntimeException e) {
+		} catch(RuntimeException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+
+	/**
+	 * @return true if this Java version supports modules
+	 */
+	public static boolean jvmSupportsModules() {
+		double version = getVersion();
+		return version > 1.8;
+	}
+
+	private static double getVersion() {
+		String version = System.getProperty("java.version");
+		int pos = version.indexOf('.');
+		if (pos == -1)
+			return Double.parseDouble(version);
+		pos = version.indexOf('.', pos + 1);
+		return Double.parseDouble(version.substring(0, pos));
 	}
 
 	/**
