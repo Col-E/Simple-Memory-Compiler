@@ -6,11 +6,14 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * In memory java-to-bytecode compiler.
+ *
+ * @author Matt
  */
 public class JavaXCompiler implements Compiler {
 	/**
@@ -41,16 +44,16 @@ public class JavaXCompiler implements Compiler {
 	@Override
 	public boolean compile() {
 		JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
+		if (javac == null)
+			throw new IllegalStateException("No Java compiler is installed. Please use a JDK context when running.");
 		// file manager, used so that the unit map can have their definitions updated
 		// after compilation.
-		JavaFileManager fmFallback = javac.getStandardFileManager(listener, Locale
-				.getDefault(), StandardCharsets.UTF_8);
+		JavaFileManager fmFallback = javac.getStandardFileManager(listener, Locale.getDefault(), UTF_8);
 		JavaFileManager fm = new VirtualFileManager(fmFallback);
 		// add options
 		List<String> options = new ArrayList<>();
-		if(pathItems != null && pathItems.size() > 0) {
+		if(pathItems != null && pathItems.size() > 0)
 			options.addAll(Arrays.asList("-classpath", getClassPathText()));
-		}
 		options.addAll(Arrays.asList("-source", target.toString()));
 		options.addAll(Arrays.asList("-target", target.toString()));
 		options.add(debug.toOption());
@@ -64,7 +67,7 @@ public class JavaXCompiler implements Compiler {
 					Method addModules = compilationTaskClass.getMethod("addModules", List.class);
 					addModules.invoke(task, modules);
 				} else {
-					throw new RuntimeException("Compiler does not support modules! The current Java version is <= 9");
+					throw new RuntimeException("Compiler does not support modules! The current Java version is < 9");
 				}
 			}
 			return task.call();
@@ -100,9 +103,8 @@ public class JavaXCompiler implements Compiler {
 		String pathDefault = System.getProperty("java.class.path");
 		StringBuilder sb = new StringBuilder(pathDefault);
 		// add extra dependencies
-		for(String path : pathItems) {
-			sb.append(";" + path);
-		}
+		for(String path : pathItems)
+			sb.append(";").append(path);
 		return sb.toString();
 	}
 

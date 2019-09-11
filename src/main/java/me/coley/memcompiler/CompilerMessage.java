@@ -5,6 +5,8 @@ import java.util.Locale;
 
 /**
  * Wrapper for JavaX Diagnostic.
+ *
+ * @author Matt
  */
 public class CompilerMessage {
 	private final Diagnostic diagnostic;

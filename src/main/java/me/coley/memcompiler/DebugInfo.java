@@ -2,6 +2,8 @@ package me.coley.memcompiler;
 
 /**
  * Wrapper for debug attribute inclusion <i>(-g option</i>
+ *
+ * @author Matt
  */
 public class DebugInfo {
 	/**

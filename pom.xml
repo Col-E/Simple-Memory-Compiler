@@ -5,10 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.coley</groupId>
 	<artifactId>memcompiler</artifactId>
-	<version>2.1</version>
+	<version>2.2</version>
 	<name>Simple Memory Compiler</name>
 	<description>In-memory compiler for fileless java compilation</description>
-	<!-- Only here because otherwise IntelliJ keeps reverting back to 1.5 :/ -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>

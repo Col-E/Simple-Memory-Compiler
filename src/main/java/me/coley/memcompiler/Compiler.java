@@ -3,6 +3,11 @@ package me.coley.memcompiler;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Compiler wrapper.
+ *
+ * @author Matt
+ */
 public interface Compiler {
 	/**
 	 * @return Success of compilation. Use {@link #setCompileListener(CompileListener)}
