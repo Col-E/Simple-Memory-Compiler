@@ -1,6 +1,6 @@
 # Simple Memory Compiler [![](https://jitpack.io/v/Col-E/Simple-Memory-Compiler.svg)](https://jitpack.io/#Col-E/Simple-Memory-Compiler)
 
-This is a basic wrapper for the `javax.tools.JavaCompiler`.
+This is a basic wrapper for the `javax.tools.JavaCompiler`. As such, you will need to run this under a JDK. JRE's do not contain compilers.
 
 * For Java 8- this is found in `tools.jar`.
 * For Java 9+ this is found in the module `java.compiler`.
@@ -76,7 +76,7 @@ This project is hosted via JitPack.io. You can add this project to your maven pr
 	<dependency>
 	    <groupId>com.github.Col-E</groupId>
 	    <artifactId>Simple-Memory-Compiler</artifactId>
-	    <version>2.1</version>
+	    <version>2.2</version>
 	</dependency>
 </dependencies>
 ```
